@@ -9,7 +9,7 @@
  * 打卡交互流程：
  *   点击打卡 → 弹出模拟定位弹窗 → 确认位置 → 弹出模拟人脸弹窗 → 模拟扫描 → 打卡成功
  */
-const { mockGetSchedule, mockCheckinHistory, mockCheckin } = require('../../utils/mock')
+const { mockGetSchedule, mockGetCheckinHistory, mockCheckin } = require('../../utils/mock')
 const { getCurrentDayOfWeek } = require('../../utils/util')
 
 Page({
@@ -86,7 +86,7 @@ Page({
    * 加载最近打卡记录（取最近5条）
    */
   async loadRecentRecords() {
-    const res = await mockCheckinHistory()
+    const res = await mockGetCheckinHistory()
     if (res.code === 0) {
       this.setData({ recentRecords: res.data.slice(0, 5) })
     }
