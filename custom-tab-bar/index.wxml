@@ -1,0 +1,18 @@
+<!-- 自定义TabBar组件 -->
+<view class="tab-bar" wx:if="{{visible}}">
+  <view
+    class="tab-bar-item {{selected === index ? 'active' : ''}}"
+    wx:for="{{list}}"
+    wx:key="index"
+    data-index="{{index}}"
+    data-path="{{item.pagePath}}"
+    bindtap="switchTab"
+  >
+    <image class="tab-icon" src="{{selected === index ? item.activeIconPath : item.iconPath}}" mode="aspectFit"></image>
+    <text class="tab-text">{{item.text}}</text>
+    <!-- 角标 -->
+    <view class="tab-badge" wx:if="{{item.badge}}">{{item.badge}}</view>
+  </view>
+</view>
+<!-- 底部占位，防止页面内容被遮挡 -->
+<view class="tab-bar-placeholder" wx:if="{{visible}}"></view>

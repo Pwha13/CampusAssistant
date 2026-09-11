@@ -1,0 +1,125 @@
+<!-- 校园公告页面 -->
+<view class="page-announcements">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索公告..." value="{{searchKeyword}}" bindinput="onSearchInput" confirm-type="search" bindconfirm="onSearch" />
+      <text class="search-clear" wx:if="{{searchKeyword}}" bindtap="onClearSearch">✕</text>
+    </view>
+  </view>
+
+  <!-- 分类筛选 -->
+  <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view
+        class="category-item {{currentCategory === '全部' ? 'active' : ''}}"
+        bindtap="onCategoryTap"
+        data-category="全部"
+      >全部</view>
+      <view
+        class="category-item {{currentCategory === item ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="*this"
+        bindtap="onCategoryTap"
+        data-category="{{item}}"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 公告列表 -->
+  <scroll-view
+    class="announcement-list"
+    scroll-y
+    refresher-enabled
+    refresher-triggered="{{isRefreshing}}"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore"
+    style="height: calc(100vh - 260rpx);"
+  >
+    <!-- 置顶公告 -->
+    <block wx:if="{{topAnnouncements.length > 0 && currentCategory === '全部' && !searchKeyword}}">
+      <view class="section-label">📌 置顶公告</view>
+      <view class="announcement-item top" wx:for="{{topAnnouncements}}" wx:key="id" bindtap="onAnnouncementTap" data-item="{{item}}">
+        <view class="ann-header">
+          <tag-component text="{{item.category}}" type="danger" size="small" />
+          <text class="ann-time">{{item.publishTime}}</text>
+        </view>
+        <text class="ann-title">{{item.title}}</text>
+        <text class="ann-summary">{{item.content}}</text>
+        <view class="ann-footer">
+          <text class="ann-publisher">{{item.publisher}}</text>
+          <text class="ann-views">👁 {{item.viewCount}}</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 普通公告 -->
+    <view class="section-label" wx:if="{{topAnnouncements.length > 0 && currentCategory === '全部' && !searchKeyword}}">📋 最新公告</view>
+    <view
+      class="announcement-item"
+      wx:for="{{filteredAnnouncements}}"
+      wx:key="id"
+      bindtap="onAnnouncementTap"
+      data-item="{{item}}"
+    >
+      <view class="ann-header">
+        <tag-component text="{{item.category}}" type="primary" size="small" />
+        <text class="ann-time">{{item.publishTime}}</text>
+      </view>
+      <text class="ann-title">{{item.title}}</text>
+      <text class="ann-summary">{{item.content}}</text>
+      <view class="ann-footer">
+        <text class="ann-publisher">{{item.publisher}}</text>
+        <text class="ann-views">👁 {{item.viewCount}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <empty-state wx:if="{{!loading && filteredAnnouncements.length === 0}}" text="{{searchKeyword ? '未找到相关公告' : '暂无公告'}}" />
+
+    <!-- 加载状态 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && filteredAnnouncements.length > 0}}">
+      <text class="no-more-text">— 没有更多了 —</text>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 公告详情弹窗 -->
+<popup-component
+  visible="{{detailVisible}}"
+  position="bottom"
+  title="{{detailItem.title}}"
+  showClose="{{true}}"
+  bind:close="onCloseDetail"
+>
+  <view class="detail-content">
+    <view class="detail-meta">
+      <tag-component text="{{detailItem.category}}" type="primary" size="small" />
+      <text class="detail-publisher">{{detailItem.publisher}}</text>
+      <text class="detail-time">{{detailItem.publishTime}}</text>
+    </view>
+    <view class="detail-body">
+      <text>{{detailItem.content}}</text>
+      <!-- 模拟富文本内容 -->
+      <text class="detail-para">一、活动背景
+为丰富校园文化生活，提升同学们的综合素质，学校决定开展相关活动。</text>
+      <text class="detail-para">二、活动安排
+1. 时间：请参照具体通知
+2. 地点：各学院自行安排
+3. 参与对象：全体在校学生</text>
+      <text class="detail-para">三、注意事项
+请各班级认真组织，确保通知到位。如有疑问请联系相关负责人。</text>
+    </view>
+    <view class="detail-footer">
+      <text class="detail-views">阅读量：{{detailItem.viewCount || 0}}</text>
+    </view>
+  </view>
+</popup-component>
+
+<!-- Toast -->
+<toast-component visible="{{toastVisible}}" type="{{toastType}}" message="{{toastMessage}}" bind:close="onToastClose" />

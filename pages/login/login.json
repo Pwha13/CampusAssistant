@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "toast-component": "/components/toast/index"
+  },
+  "navigationBarTitleText": "校园助手",
+  "navigationBarBackgroundColor": "#1890ff"
+}

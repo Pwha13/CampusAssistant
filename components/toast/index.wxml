@@ -1,0 +1,17 @@
+<!-- Toast轻提示组件 -->
+<view class="toast-mask" wx:if="{{visible}}" catchtouchmove="preventScroll">
+  <view class="toast-box toast-{{position}}">
+    <!-- 图标 -->
+    <view class="toast-icon" wx:if="{{type === 'loading'}}">
+      <view class="toast-loading"></view>
+    </view>
+    <view class="toast-icon toast-icon-success" wx:elif="{{type === 'success'}}">
+      <text class="toast-checkmark">✓</text>
+    </view>
+    <view class="toast-icon toast-icon-error" wx:elif="{{type === 'error'}}">
+      <text class="toast-cross">✕</text>
+    </view>
+    <!-- 文字 -->
+    <text class="toast-text">{{message}}</text>
+  </view>
+</view>

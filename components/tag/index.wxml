@@ -1,0 +1,4 @@
+<!-- 标签组件 -->
+<view class="tag tag-{{type}} tag-{{size}}" bindtap="onTap">
+  <text>{{text}}</text>
+</view>

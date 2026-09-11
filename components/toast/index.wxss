@@ -1,0 +1,85 @@
+/* Toast轻提示样式 */
+.toast-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 16rpx;
+  padding: 36rpx 48rpx;
+  min-width: 200rpx;
+  max-width: 400rpx;
+  animation: toastFadeIn 0.2s ease;
+}
+
+.toast-top {
+  position: fixed;
+  top: 200rpx;
+}
+
+.toast-bottom {
+  position: fixed;
+  bottom: 200rpx;
+}
+
+@keyframes toastFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.toast-icon {
+  margin-bottom: 16rpx;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-icon-success {
+  color: #fff;
+  font-size: 56rpx;
+  font-weight: bold;
+}
+
+.toast-icon-error {
+  color: #fff;
+  font-size: 56rpx;
+  font-weight: bold;
+}
+
+.toast-text {
+  color: #fff;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+/* loading旋转动画 */
+.toast-loading {
+  width: 56rpx;
+  height: 56rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-top: 4rpx solid #fff;
+  border-radius: 50%;
+  animation: toastSpin 0.8s linear infinite;
+}
+
+@keyframes toastSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,143 @@
+<!-- 个人信息页面 -->
+<view class="page-profile">
+  <!-- 用户头部信息卡 -->
+  <view class="profile-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="avatar-wrap">
+        <image class="user-avatar" src="{{userInfo.avatar || '/static/images/avatar-default.png'}}" mode="aspectFill" bindtap="onChooseAvatar"></image>
+        <view class="avatar-edit">
+          <text class="edit-icon">📷</text>
+        </view>
+      </view>
+      <text class="user-name">{{userInfo.name || '未登录'}}</text>
+      <text class="user-role-tag">{{userInfo.role === 'student' ? '学生' : '教师'}}</text>
+      <text class="user-id">{{userInfo.studentId || userInfo.teacherId || ''}}</text>
+    </view>
+  </view>
+
+  <!-- 个人信息详情 -->
+  <view class="profile-section">
+    <view class="section-header">
+      <text class="section-title">基本信息</text>
+    </view>
+    <view class="info-list">
+      <view class="info-item" wx:if="{{userInfo.college}}">
+        <text class="info-label">学院</text>
+        <text class="info-value">{{userInfo.college}}</text>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.className}}">
+        <text class="info-label">班级</text>
+        <text class="info-value">{{userInfo.className}}</text>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.dormitory}}">
+        <text class="info-label">宿舍</text>
+        <text class="info-value">{{userInfo.dormitory}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">手机</text>
+        <text class="info-value">{{userInfo.phone || '未设置'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">邮箱</text>
+        <text class="info-value">{{userInfo.email || '未设置'}}</text>
+      </view>
+      <view class="info-item" wx:if="{{userInfo.enrollmentYear}}">
+        <text class="info-label">入学年份</text>
+        <text class="info-value">{{userInfo.enrollmentYear}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="profile-section">
+    <view class="section-header">
+      <text class="section-title">功能设置</text>
+    </view>
+    <view class="menu-list">
+      <view class="menu-item" bindtap="onEditProfile">
+        <text class="menu-icon">✏️</text>
+        <text class="menu-text">编辑资料</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onChangePassword">
+        <text class="menu-icon">🔑</text>
+        <text class="menu-text">修改密码</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onCheckinHistory">
+        <text class="menu-icon">📊</text>
+        <text class="menu-text">打卡记录</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onAbout">
+        <text class="menu-icon">ℹ️</text>
+        <text class="menu-text">关于校园助手</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section">
+    <button class="logout-btn" bindtap="onLogout">退出登录</button>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text class="version-text">校园助手 v1.0.0</text>
+  </view>
+</view>
+
+<!-- 编辑资料弹窗 -->
+<popup-component
+  visible="{{editVisible}}"
+  position="bottom"
+  title="编辑资料"
+  showClose="{{true}}"
+  bind:close="onCloseEdit"
+>
+  <view class="edit-form">
+    <view class="form-group">
+      <text class="form-label">姓名</text>
+      <input class="form-input" value="{{editForm.name}}" bindinput="onEditInput" data-field="name" placeholder="请输入姓名" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">手机</text>
+      <input class="form-input" value="{{editForm.phone}}" bindinput="onEditInput" data-field="phone" placeholder="请输入手机号" type="number" maxlength="11" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">邮箱</text>
+      <input class="form-input" value="{{editForm.email}}" bindinput="onEditInput" data-field="email" placeholder="请输入邮箱" />
+    </view>
+    <button class="save-btn" bindtap="onSaveProfile" loading="{{saving}}">保存</button>
+  </view>
+</popup-component>
+
+<!-- 修改密码弹窗 -->
+<popup-component
+  visible="{{passwordVisible}}"
+  position="bottom"
+  title="修改密码"
+  showClose="{{true}}"
+  bind:close="onClosePassword"
+>
+  <view class="edit-form">
+    <view class="form-group">
+      <text class="form-label">原密码</text>
+      <input class="form-input" password value="{{passwordForm.oldPassword}}" bindinput="onPasswordInput" data-field="oldPassword" placeholder="请输入原密码" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">新密码</text>
+      <input class="form-input" password value="{{passwordForm.newPassword}}" bindinput="onPasswordInput" data-field="newPassword" placeholder="请输入新密码（至少6位）" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">确认密码</text>
+      <input class="form-input" password value="{{passwordForm.confirmPassword}}" bindinput="onPasswordInput" data-field="confirmPassword" placeholder="请再次输入新密码" />
+    </view>
+    <button class="save-btn" bindtap="onSavePassword" loading="{{saving}}">确认修改</button>
+  </view>
+</popup-component>
+
+<!-- Toast -->
+<toast-component visible="{{toastVisible}}" type="{{toastType}}" message="{{toastMessage}}" bind:close="onToastClose" />

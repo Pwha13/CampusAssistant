@@ -1,0 +1,226 @@
+<!-- 请假管理页面 -->
+<view class="page-leave">
+  <!-- 顶部统计 -->
+  <view class="leave-stats">
+    <view class="stat-item">
+      <text class="stat-num total">{{total}}</text>
+      <text class="stat-label">总申请</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num pending">{{pendingCount}}</text>
+      <text class="stat-label">待审批</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num approved">{{approvedCount}}</text>
+      <text class="stat-label">已通过</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num rejected">{{rejectedCount}}</text>
+      <text class="stat-label">已驳回</text>
+    </view>
+  </view>
+
+  <!-- 状态标签筛选 -->
+  <scroll-view class="status-tabs" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="status-list">
+      <view class="status-tab {{currentStatus === 'all' ? 'active' : ''}}" bindtap="onStatusTap" data-status="all">全部</view>
+      <view class="status-tab {{currentStatus === 'pending' ? 'active' : ''}}" bindtap="onStatusTap" data-status="pending">待审批</view>
+      <view class="status-tab {{currentStatus === 'approved' ? 'active' : ''}}" bindtap="onStatusTap" data-status="approved">已通过</view>
+      <view class="status-tab {{currentStatus === 'rejected' ? 'active' : ''}}" bindtap="onStatusTap" data-status="rejected">已驳回</view>
+    </view>
+  </scroll-view>
+
+  <!-- 请假记录列表 -->
+  <scroll-view
+    class="leave-list"
+    scroll-y
+    refresher-enabled
+    refresher-triggered="{{isRefreshing}}"
+    bindrefresherrefresh="onRefresh"
+    style="height: calc(100vh - 340rpx);"
+  >
+    <view class="leave-item" wx:for="{{filteredRecords}}" wx:key="id" bindtap="onLeaveTap" data-item="{{item}}">
+      <view class="leave-header">
+        <view class="leave-type-row">
+          <text class="leave-type">{{item.type}}</text>
+          <!-- 【状态标签】根据审批状态显示不同颜色 -->
+          <view class="status-badge status-{{item.status}}">
+            {{item.status === 'pending' ? '待审批' : item.status === 'approved' ? '已通过' : '已驳回'}}
+          </view>
+        </view>
+        <text class="leave-id">{{item.id}}</text>
+      </view>
+      <view class="leave-body">
+        <view class="leave-info-row">
+          <text class="info-label">时间：</text>
+          <text class="info-value">{{item.startTime}} ~ {{item.endTime}}</text>
+        </view>
+        <view class="leave-info-row">
+          <text class="info-label">原因：</text>
+          <text class="info-value reason">{{item.reason}}</text>
+        </view>
+      </view>
+      <view class="leave-footer">
+        <text class="leave-apply-time">申请时间：{{item.applyTime}}</text>
+        <text class="leave-approver">{{item.approver}}</text>
+      </view>
+      <!-- 驳回原因展示 -->
+      <view class="leave-reject" wx:if="{{item.status === 'rejected' && item.remark}}">
+        <text class="reject-label">驳回原因：</text>
+        <text class="reject-text">{{item.remark}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <empty-state wx:if="{{!loading && filteredRecords.length === 0}}" text="暂无请假记录" actionText="去申请" bind:action="onAddLeave" />
+
+    <!-- 加载中 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+  </scroll-view>
+
+  <!-- 新建请假按钮 -->
+  <view class="add-btn" bindtap="onAddLeave">
+    <text class="add-btn-icon">+</text>
+    <text class="add-btn-text">申请请假</text>
+  </view>
+</view>
+
+<!-- 新建请假申请弹窗 -->
+<popup-component
+  visible="{{formVisible}}"
+  position="bottom"
+  title="新建请假申请"
+  showClose="{{true}}"
+  bind:close="onCloseForm"
+>
+  <view class="leave-form">
+    <!-- 请假类型 -->
+    <view class="form-group">
+      <text class="form-label required">请假类型</text>
+      <view class="type-options">
+        <view
+          class="type-option {{formData.leaveType === item ? 'active' : ''}}"
+          wx:for="{{leaveTypes}}"
+          wx:key="*this"
+          bindtap="onSelectType"
+          data-type="{{item}}"
+        >{{item}}</view>
+      </view>
+      <text class="form-error" wx:if="{{errors.leaveType}}">{{errors.leaveType}}</text>
+    </view>
+
+    <!-- 开始时间 -->
+    <view class="form-group">
+      <text class="form-label required">开始时间</text>
+      <picker mode="date" value="{{formData.startTime}}" bindchange="onStartTimeChange">
+        <view class="form-picker {{formData.startTime ? '' : 'placeholder'}}">
+          {{formData.startTime || '请选择开始日期'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+      <text class="form-error" wx:if="{{errors.startTime}}">{{errors.startTime}}</text>
+    </view>
+
+    <!-- 结束时间 -->
+    <view class="form-group">
+      <text class="form-label required">结束时间</text>
+      <picker mode="date" value="{{formData.endTime}}" bindchange="onEndTimeChange">
+        <view class="form-picker {{formData.endTime ? '' : 'placeholder'}}">
+          {{formData.endTime || '请选择结束日期'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+      <text class="form-error" wx:if="{{errors.endTime}}">{{errors.endTime}}</text>
+    </view>
+
+    <!-- 请假原因 -->
+    <view class="form-group">
+      <text class="form-label required">请假原因</text>
+      <textarea
+        class="form-textarea"
+        placeholder="请输入请假原因（至少10个字）"
+        value="{{formData.reason}}"
+        bindinput="onReasonInput"
+        maxlength="200"
+      />
+      <view class="textarea-counter">
+        <text class="{{formData.reason.length >= 10 ? 'valid' : ''}}">{{formData.reason.length}}</text>
+        <text>/200</text>
+      </view>
+      <text class="form-error" wx:if="{{errors.reason}}">{{errors.reason}}</text>
+    </view>
+
+    <!-- 附件上传（模拟） -->
+    <view class="form-group">
+      <text class="form-label">附件材料</text>
+      <view class="upload-area" wx:if="{{!formData.attachment}}" bindtap="onUploadAttachment">
+        <text class="upload-icon">📎</text>
+        <text class="upload-text">点击上传附件</text>
+      </view>
+      <view class="upload-preview" wx:else>
+        <text class="preview-name">{{formData.attachment}}</text>
+        <text class="preview-remove" bindtap="onRemoveAttachment">✕</text>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="onSubmitLeave" loading="{{submitting}}" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交申请'}}
+    </button>
+  </view>
+</popup-component>
+
+<!-- 详情弹窗 -->
+<popup-component
+  visible="{{detailVisible}}"
+  position="bottom"
+  title="请假详情"
+  showClose="{{true}}"
+  bind:close="onCloseDetail"
+>
+  <view class="detail-content" wx:if="{{detailItem}}">
+    <view class="detail-row">
+      <text class="detail-label">申请编号</text>
+      <text class="detail-value">{{detailItem.id}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">请假类型</text>
+      <text class="detail-value">{{detailItem.type}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">请假时间</text>
+      <text class="detail-value">{{detailItem.startTime}} ~ {{detailItem.endTime}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">请假原因</text>
+      <text class="detail-value">{{detailItem.reason}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">审批状态</text>
+      <view class="status-badge status-{{detailItem.status}}">
+        {{detailItem.status === 'pending' ? '待审批' : detailItem.status === 'approved' ? '已通过' : '已驳回'}}
+      </view>
+    </view>
+    <view class="detail-row" wx:if="{{detailItem.approver}}">
+      <text class="detail-label">审批人</text>
+      <text class="detail-value">{{detailItem.approver}}</text>
+    </view>
+    <view class="detail-row" wx:if="{{detailItem.remark}}">
+      <text class="detail-label">审批备注</text>
+      <text class="detail-value remark">{{detailItem.remark}}</text>
+    </view>
+    <view class="detail-row">
+      <text class="detail-label">申请时间</text>
+      <text class="detail-value">{{detailItem.applyTime}}</text>
+    </view>
+  </view>
+</popup-component>
+
+<!-- Toast -->
+<toast-component visible="{{toastVisible}}" type="{{toastType}}" message="{{toastMessage}}" bind:close="onToastClose" />

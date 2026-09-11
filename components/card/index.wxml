@@ -1,0 +1,18 @@
+<!-- 通用卡片组件 -->
+<view class="card {{customClass}}" bindtap="onTap">
+  <view class="card-header" wx:if="{{title || extra}}">
+    <view class="card-header-left">
+      <view class="card-dot" wx:if="{{showDot}}"></view>
+      <text class="card-title">{{title}}</text>
+    </view>
+    <slot name="extra">
+      <text class="card-extra" wx:if="{{extra}}" bindtap="onExtraTap">{{extra}}</text>
+    </slot>
+  </view>
+  <view class="card-body">
+    <slot></slot>
+  </view>
+  <view class="card-footer" wx:if="{{showFooter}}">
+    <slot name="footer"></slot>
+  </view>
+</view>

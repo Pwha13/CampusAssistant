@@ -1,0 +1,106 @@
+/* 通用弹窗组件样式 */
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-container {
+  background: #fff;
+  border-radius: 24rpx;
+  width: 600rpx;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: popupFadeIn 0.2s ease;
+}
+
+/* 底部弹出 */
+.popup-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  border-radius: 24rpx 24rpx 0 0;
+  max-height: 70vh;
+  animation: popupSlideUp 0.25s ease;
+}
+
+@keyframes popupFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes popupSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.popup-close {
+  position: absolute;
+  top: 20rpx;
+  right: 24rpx;
+  z-index: 10;
+  padding: 8rpx;
+}
+
+.popup-close-icon {
+  font-size: 40rpx;
+  color: #999;
+}
+
+.popup-header {
+  padding: 32rpx 32rpx 16rpx;
+  text-align: center;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup-content {
+  padding: 24rpx 32rpx;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.popup-footer {
+  display: flex;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.popup-btn {
+  flex: 1;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  font-size: 30rpx;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.popup-btn::after {
+  border: none;
+}
+
+.popup-btn-cancel {
+  color: #999;
+  border-right: 1rpx solid #f0f0f0;
+}
+
+.popup-btn-confirm {
+  color: #1890ff;
+  font-weight: 500;
+}

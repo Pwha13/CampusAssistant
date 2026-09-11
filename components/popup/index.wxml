@@ -1,0 +1,22 @@
+<!-- 通用弹窗组件 -->
+<view class="popup-mask" wx:if="{{visible}}" catchtap="onMaskTap" catchtouchmove="preventScroll">
+  <view class="popup-container popup-{{position}}" catchtap="preventBubble">
+    <!-- 关闭按钮 -->
+    <view class="popup-close" wx:if="{{showClose}}" bindtap="onClose">
+      <text class="popup-close-icon">×</text>
+    </view>
+    <!-- 标题栏 -->
+    <view class="popup-header" wx:if="{{title}}">
+      <text class="popup-title">{{title}}</text>
+    </view>
+    <!-- 内容区 -->
+    <view class="popup-content">
+      <slot></slot>
+    </view>
+    <!-- 底部按钮区 -->
+    <view class="popup-footer" wx:if="{{showFooter}}">
+      <button class="popup-btn popup-btn-cancel" wx:if="{{showCancel}}" bindtap="onCancel">{{cancelText}}</button>
+      <button class="popup-btn popup-btn-confirm" bindtap="onConfirm">{{confirmText}}</button>
+    </view>
+  </view>
+</view>

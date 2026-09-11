@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "card-component": "/components/card/index",
+    "tag-component": "/components/tag/index",
+    "popup-component": "/components/popup/index",
+    "toast-component": "/components/toast/index"
+  },
+  "navigationBarTitleText": "个人信息"
+}

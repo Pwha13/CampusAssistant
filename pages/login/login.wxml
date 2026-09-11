@@ -1,0 +1,79 @@
+<!-- 登录页面 -->
+<view class="login-page">
+  <!-- 顶部Logo区域 -->
+  <view class="login-header">
+    <view class="login-logo">
+      <text class="logo-icon">🎓</text>
+    </view>
+    <text class="login-title">校园助手</text>
+    <text class="login-subtitle">Campus Assistant</text>
+  </view>
+
+  <!-- 登录表单 -->
+  <view class="login-form">
+    <!-- 角色选择 -->
+    <view class="role-switch">
+      <view class="role-item {{role === 'student' ? 'active' : ''}}" bindtap="switchRole" data-role="student">
+        <text class="role-icon">👨‍🎓</text>
+        <text class="role-text">学生登录</text>
+      </view>
+      <view class="role-item {{role === 'teacher' ? 'active' : ''}}" bindtap="switchRole" data-role="teacher">
+        <text class="role-icon">👨‍🏫</text>
+        <text class="role-text">教师登录</text>
+      </view>
+    </view>
+
+    <!-- 用户名输入 -->
+    <view class="form-item {{usernameFocused ? 'focused' : ''}} {{usernameError ? 'error' : ''}}">
+      <text class="form-label">{{role === 'student' ? '学号' : '工号'}}</text>
+      <input
+        class="form-input"
+        placeholder="请输入{{role === 'student' ? '学号' : '工号'}}"
+        value="{{username}}"
+        bindinput="onUsernameInput"
+        bindfocus="onUsernameFocus"
+        bindblur="onUsernameBlur"
+        maxlength="20"
+      />
+      <text class="form-error" wx:if="{{usernameError}}">{{usernameError}}</text>
+    </view>
+
+    <!-- 密码输入 -->
+    <view class="form-item {{passwordFocused ? 'focused' : ''}} {{passwordError ? 'error' : ''}}">
+      <text class="form-label">密码</text>
+      <input
+        class="form-input"
+        placeholder="请输入密码"
+        password="{{!showPassword}}"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+        bindfocus="onPasswordFocus"
+        bindblur="onPasswordBlur"
+        maxlength="20"
+      />
+      <view class="form-eye" bindtap="togglePassword">
+        <text>{{showPassword ? '👁' : '🔒'}}</text>
+      </view>
+      <text class="form-error" wx:if="{{passwordError}}">{{passwordError}}</text>
+    </view>
+
+    <!-- 登录按钮 -->
+    <button class="login-btn" bindtap="onLogin" loading="{{isLoading}}" disabled="{{isLoading}}">
+      {{isLoading ? '登录中...' : '登 录'}}
+    </button>
+
+    <!-- 提示信息 -->
+    <view class="login-tip">
+      <text class="tip-text">演示账号：任意用户名+任意密码即可登录</text>
+      <text class="tip-text">输入 "admin" 登录教师端</text>
+    </view>
+  </view>
+
+  <!-- 底部版权 -->
+  <view class="login-footer">
+    <text class="footer-text">© 2024 校园助手  校园一站式服务平台</text>
+  </view>
+</view>
+
+<!-- Toast组件 -->
+<toast-component visible="{{toastVisible}}" type="{{toastType}}" message="{{toastMessage}}" bind:close="onToastClose" />
