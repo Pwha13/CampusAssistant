@@ -141,3 +141,31 @@ view, text, image, button, input, textarea, scroll-view {
   background: #f0f0f0;
   margin: 16rpx 0;
 }
+
+/* ============ 按钮重置 ============ */
+button.btn-reject, button.btn-approve {
+  padding: 8rpx 16rpx !important;
+  font-size: 24rpx !important;
+  border-radius: 8rpx !important;
+  line-height: 1.5 !important;
+  min-height: auto !important;
+  margin: 0 !important;
+  width: auto !important;
+  display: inline-block !important;
+}
+
+button.btn-reject {
+  background-color: #fff2f0 !important;
+  color: #ff4d4f !important;
+  border: 1rpx solid #ff4d4f !important;
+}
+
+button.btn-approve {
+  background-color: #f6ffed !important;
+  color: #52c41a !important;
+  border: 1rpx solid #52c41a !important;
+}
+
+button.btn-reject::after, button.btn-approve::after {
+  border: none !important;
+}
