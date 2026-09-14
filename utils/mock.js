@@ -30,7 +30,7 @@ const MOCK_USERS = {
   },
   teacher: {
     id: 'T2024001',
-    name: '李老师',
+    name: '陈老师',
     role: 'teacher',
     teacherId: 'T2024001',
     department: '计算机学院',
@@ -162,6 +162,166 @@ const MOCK_CHECKIN_HISTORY = [
   { id: 6, type: 'night', time: '2024-09-02 22:15', location: '学生宿舍', status: 'success' }
 ]
 
+<<<<<<< Updated upstream
+=======
+// ============ 教师端Mock数据 ============
+
+/** 教师首页统计数据 */
+const MOCK_TEACHER_STATS = {
+  totalStudents: 128,        // 管理学生总数
+  todayCheckin: 115,         // 今日已打卡
+  pendingLeaves: 5,          // 待审批请假
+  myAnnouncements: 12        // 我发布的公告
+}
+
+/** 教师今日课程 */
+const MOCK_TEACHER_SCHEDULE = [
+  { id: 1, name: '高等数学', className: '计算机科学2401班', location: '教学楼A-301', startTime: '08:00', endTime: '09:40', studentCount: 45 },
+  { id: 2, name: '数据结构', className: '计算机科学2402班', location: '教学楼B-205', startTime: '10:00', endTime: '11:40', studentCount: 42 },
+  { id: 3, name: '计算机网络', className: '软件工程2401班', location: '教学楼C-401', startTime: '14:00', endTime: '15:40', studentCount: 41 }
+]
+
+/** 考勤记录Mock数据 */
+const MOCK_ATTENDANCE_RECORDS = [
+  { id: 'A2024001', studentName: '张三', studentId: '2024001001', className: '计算机科学2401班', course: '高等数学', date: '2024-09-10', status: 'normal', checkTime: '07:55', location: '教学楼A-301' },
+  { id: 'A2024002', studentName: '李四', studentId: '2024001002', className: '计算机科学2401班', course: '高等数学', date: '2024-09-10', status: 'late', checkTime: '08:15', location: '教学楼A-301' },
+  { id: 'A2024003', studentName: '王五', studentId: '2024001003', className: '计算机科学2401班', course: '高等数学', date: '2024-09-10', status: 'absent', checkTime: '', location: '' },
+  { id: 'A2024004', studentName: '赵六', studentId: '2024001004', className: '计算机科学2401班', course: '高等数学', date: '2024-09-10', status: 'leave', checkTime: '', location: '' },
+  { id: 'A2024005', studentName: '钱七', studentId: '2024001005', className: '计算机科学2402班', course: '数据结构', date: '2024-09-10', status: 'normal', checkTime: '07:58', location: '教学楼B-205' },
+  { id: 'A2024006', studentName: '孙八', studentId: '2024001006', className: '计算机科学2402班', course: '数据结构', date: '2024-09-10', status: 'late', checkTime: '10:12', location: '教学楼B-205' },
+  { id: 'A2024007', studentName: '周九', studentId: '2024001007', className: '软件工程2401班', course: '计算机网络', date: '2024-09-10', status: 'normal', checkTime: '07:50', location: '教学楼C-401' },
+  { id: 'A2024008', studentName: '吴十', studentId: '2024001008', className: '软件工程2401班', course: '计算机网络', date: '2024-09-10', status: 'absent', checkTime: '', location: '' }
+]
+
+/** 考勤异常申诉Mock数据 */
+const MOCK_APPEAL_RECORDS = [
+  { id: 'AP2024001', studentName: '李四', studentId: '2024001002', className: '计算机科学2401班', course: '高等数学', date: '2024-09-10', originalStatus: 'late', appealReason: '早上身体不适就医，已提供医院证明', appealTime: '2024-09-10 10:30', status: 'pending' },
+  { id: 'AP2024002', studentName: '孙八', studentId: '2024001006', className: '计算机科学2402班', course: '数据结构', date: '2024-09-10', originalStatus: 'late', appealReason: '交通堵塞导致迟到', appealTime: '2024-09-10 11:00', status: 'pending' }
+]
+
+/** 教师端请假审批Mock数据（包含学生信息） */
+const MOCK_TEACHER_LEAVE_RECORDS = [
+  {
+    id: 'L2024001',
+    studentName: '张三',
+    studentId: '2024001001',
+    className: '计算机科学2401班',
+    type: '事假',
+    startTime: '2024-09-11 08:00',
+    endTime: '2024-09-11 17:00',
+    reason: '家中有事需要回家处理',
+    status: 'pending',
+    applyTime: '2024-09-10 10:30',
+    approver: '陈老师',
+    remark: ''
+  },
+  {
+    id: 'L2024002',
+    studentName: '李四',
+    studentId: '2024001002',
+    className: '计算机科学2401班',
+    type: '病假',
+    startTime: '2024-09-12 08:00',
+    endTime: '2024-09-13 17:00',
+    reason: '身体不适，需要就医休养',
+    status: 'pending',
+    applyTime: '2024-09-11 20:00',
+    approver: '陈老师',
+    remark: ''
+  },
+  {
+    id: 'L2024003',
+    studentName: '王五',
+    studentId: '2024001003',
+    className: '计算机科学2401班',
+    type: '公假',
+    startTime: '2024-09-10 08:00',
+    endTime: '2024-09-10 12:00',
+    reason: '参加学校组织的志愿者活动',
+    status: 'approved',
+    applyTime: '2024-09-09 14:00',
+    approver: '陈老师',
+    remark: '同意，请注意安全'
+  },
+  {
+    id: 'L2024004',
+    studentName: '赵六',
+    studentId: '2024001004',
+    className: '计算机科学2401班',
+    type: '事假',
+    startTime: '2024-09-08 14:00',
+    endTime: '2024-09-08 17:00',
+    reason: '回家取重要物品',
+    status: 'rejected',
+    applyTime: '2024-09-07 22:00',
+    approver: '陈老师',
+    remark: '理由不充分，请重新提交'
+  },
+  {
+    id: 'L2024005',
+    studentName: '钱七',
+    studentId: '2024001005',
+    className: '计算机科学2402班',
+    type: '病假',
+    startTime: '2024-09-14 08:00',
+    endTime: '2024-09-14 17:00',
+    reason: '感冒发烧需要休息',
+    status: 'pending',
+    applyTime: '2024-09-13 21:00',
+    approver: '陈老师',
+    remark: ''
+  }
+]
+
+/** 教师发布的公告Mock数据 */
+const MOCK_TEACHER_ANNOUNCEMENTS = [
+  {
+    id: 101,
+    title: '高等数学期中考试安排通知',
+    content: '各位同学，高等数学期中考试定于10月15日进行，请大家提前做好复习准备...',
+    category: '考试通知',
+    publishTime: '2024-09-10 10:00',
+    publisher: '陈老师',
+    isTop: true,
+    viewCount: 89,
+    status: 'published'
+  },
+  {
+    id: 102,
+    title: '关于调整课程作业提交方式的通知',
+    content: '为方便大家提交作业，即日起课程作业统一通过学习通平台提交...',
+    category: '课程通知',
+    publishTime: '2024-09-08 14:30',
+    publisher: '陈老师',
+    isTop: false,
+    viewCount: 156,
+    status: 'published'
+  },
+  {
+    id: 103,
+    title: '数据结构实验课分组名单',
+    content: '请同学们查看附件中的实验课分组名单，按照分组进行实验...',
+    category: '课程通知',
+    publishTime: '2024-09-05 09:15',
+    publisher: '陈老师',
+    isTop: false,
+    viewCount: 78,
+    status: 'published'
+  },
+  {
+    id: 104,
+    title: '国庆假期课程调整通知',
+    content: '国庆假期期间课程暂停，10月8日恢复正常上课，请同学们注意...',
+    category: '教务通知',
+    publishTime: '2024-09-03 16:00',
+    publisher: '陈老师',
+    isTop: false,
+    viewCount: 234,
+    status: 'published'
+  }
+]
+
+>>>>>>> Stashed changes
 // ============ Mock API接口 ============
 
 /**
@@ -279,6 +439,273 @@ const mockGetUserInfo = () => {
   return mockRequest(userInfo)
 }
 
+<<<<<<< Updated upstream
+=======
+// ============ 教师端Mock API接口 ============
+
+/**
+ * 获取教师首页统计数据
+ * @returns {Promise} 返回教师端统计信息
+ */
+const mockGetTeacherStats = () => {
+  return mockRequest(MOCK_TEACHER_STATS, 600)
+}
+
+/**
+ * 获取教师今日课程
+ * @returns {Promise} 返回今日课程列表
+ */
+const mockGetTeacherSchedule = () => {
+  return mockRequest(MOCK_TEACHER_SCHEDULE, 600)
+}
+
+/**
+ * 获取考勤记录列表（支持筛选和分页）
+ * @param {Object} params - 查询参数
+ * @param {String} params.className - 班级筛选
+ * @param {String} params.course - 课程筛选
+ * @param {String} params.status - 状态筛选: normal/late/absent/leave
+ * @param {String} params.keyword - 搜索关键词（学生姓名/学号）
+ * @param {Number} params.page - 页码
+ * @param {Number} params.pageSize - 每页数量
+ * @returns {Promise} 返回考勤记录列表
+ */
+const mockGetAttendanceRecords = (params = {}) => {
+  const { className, course, status, keyword, page = 1, pageSize = 10 } = params
+  let filtered = [...MOCK_ATTENDANCE_RECORDS]
+
+  // 班级筛选
+  if (className) {
+    filtered = filtered.filter(item => item.className === className)
+  }
+
+  // 课程筛选
+  if (course) {
+    filtered = filtered.filter(item => item.course === course)
+  }
+
+  // 状态筛选
+  if (status) {
+    filtered = filtered.filter(item => item.status === status)
+  }
+
+  // 关键词搜索
+  if (keyword) {
+    const kw = keyword.toLowerCase()
+    filtered = filtered.filter(item =>
+      item.studentName.toLowerCase().includes(kw) ||
+      item.studentId.toLowerCase().includes(kw)
+    )
+  }
+
+  const start = (page - 1) * pageSize
+  const list = filtered.slice(start, start + pageSize)
+
+  return mockRequest({
+    list,
+    total: filtered.length,
+    hasMore: start + pageSize < filtered.length
+  }, 500)
+}
+
+/**
+ * 获取考勤异常申诉列表
+ * @param {String} status - 状态筛选: pending/approved/rejected
+ * @returns {Promise} 返回申诉记录列表
+ */
+const mockGetAppealRecords = (status) => {
+  let filtered = [...MOCK_APPEAL_RECORDS]
+  if (status) {
+    filtered = filtered.filter(item => item.status === status)
+  }
+  return mockRequest(filtered, 500)
+}
+
+/**
+ * 处理考勤异常申诉
+ * @param {String} appealId - 申诉ID
+ * @param {String} action - 操作: approve/reject
+ * @param {String} remark - 备注
+ * @returns {Promise} 返回操作结果
+ */
+const mockHandleAppeal = (appealId, action, remark) => {
+  const appeal = MOCK_APPEAL_RECORDS.find(item => item.id === appealId)
+  if (appeal) {
+    appeal.status = action === 'approve' ? 'approved' : 'rejected'
+    appeal.remark = remark
+  }
+  return mockRequest({ success: true }, 800)
+}
+
+/**
+ * 获取教师端请假审批列表（支持筛选和分页）
+ * @param {Object} params - 查询参数
+ * @param {String} params.status - 状态筛选: pending/approved/rejected
+ * @param {String} params.className - 班级筛选
+ * @param {String} params.keyword - 搜索关键词（学生姓名/学号）
+ * @param {Number} params.page - 页码
+ * @param {Number} params.pageSize - 每页数量
+ * @returns {Promise} 返回请假记录列表
+ */
+const mockGetTeacherLeaveRecords = (params = {}) => {
+  const { status, className, keyword, page = 1, pageSize = 10 } = params
+  let filtered = [...MOCK_TEACHER_LEAVE_RECORDS]
+
+  // 状态筛选
+  if (status) {
+    filtered = filtered.filter(item => item.status === status)
+  }
+
+  // 班级筛选
+  if (className) {
+    filtered = filtered.filter(item => item.className === className)
+  }
+
+  // 关键词搜索
+  if (keyword) {
+    const kw = keyword.toLowerCase()
+    filtered = filtered.filter(item =>
+      item.studentName.toLowerCase().includes(kw) ||
+      item.studentId.toLowerCase().includes(kw)
+    )
+  }
+
+  const start = (page - 1) * pageSize
+  const list = filtered.slice(start, start + pageSize)
+
+  return mockRequest({
+    list,
+    total: filtered.length,
+    hasMore: start + pageSize < filtered.length
+  }, 500)
+}
+
+/**
+ * 审批请假申请
+ * @param {String} leaveId - 请假记录ID
+ * @param {String} action - 操作: approve/reject
+ * @param {String} remark - 审批备注
+ * @returns {Promise} 返回操作结果
+ */
+const mockApproveLeave = (leaveId, action, remark) => {
+  const record = MOCK_TEACHER_LEAVE_RECORDS.find(item => item.id === leaveId)
+  if (record) {
+    record.status = action === 'approve' ? 'approved' : 'rejected'
+    record.remark = remark
+  }
+  return mockRequest({ success: true }, 800)
+}
+
+/**
+ * 获取教师发布的公告列表（支持筛选和分页）
+ * @param {Object} params - 查询参数
+ * @param {String} params.status - 状态筛选: published/draft
+ * @param {String} params.keyword - 搜索关键词
+ * @param {Number} params.page - 页码
+ * @param {Number} params.pageSize - 每页数量
+ * @returns {Promise} 返回公告列表
+ */
+const mockGetTeacherAnnouncements = (params = {}) => {
+  const { status, keyword, page = 1, pageSize = 10 } = params
+  let filtered = [...MOCK_TEACHER_ANNOUNCEMENTS]
+
+  // 状态筛选
+  if (status) {
+    filtered = filtered.filter(item => item.status === status)
+  }
+
+  // 关键词搜索
+  if (keyword) {
+    const kw = keyword.toLowerCase()
+    filtered = filtered.filter(item =>
+      item.title.toLowerCase().includes(kw)
+    )
+  }
+
+  const start = (page - 1) * pageSize
+  const list = filtered.slice(start, start + pageSize)
+
+  return mockRequest({
+    list,
+    total: filtered.length,
+    hasMore: start + pageSize < filtered.length
+  }, 500)
+}
+
+/**
+ * 发布/编辑公告
+ * @param {Object} data - 公告数据
+ * @param {String} data.title - 标题
+ * @param {String} data.content - 内容
+ * @param {String} data.category - 分类
+ * @param {Boolean} data.isTop - 是否置顶
+ * @returns {Promise} 返回操作结果
+ */
+const mockPublishAnnouncement = (data) => {
+  const newAnnouncement = {
+    id: Date.now(),
+    ...data,
+    publishTime: new Date().toLocaleString(),
+    publisher: '陈老师',
+    viewCount: 0,
+    status: 'published'
+  }
+  MOCK_TEACHER_ANNOUNCEMENTS.unshift(newAnnouncement)
+  return mockRequest({ id: newAnnouncement.id }, 1000)
+}
+
+/**
+ * 删除公告
+ * @param {Number} announcementId - 公告ID
+ * @returns {Promise} 返回操作结果
+ */
+const mockDeleteAnnouncement = (announcementId) => {
+  const index = MOCK_TEACHER_ANNOUNCEMENTS.findIndex(item => item.id === announcementId)
+  if (index > -1) {
+    MOCK_TEACHER_ANNOUNCEMENTS.splice(index, 1)
+  }
+  return mockRequest({ success: true }, 600)
+}
+
+/**
+ * 获取公告阅读统计
+ * @param {Number} announcementId - 公告ID
+ * @returns {Promise} 返回阅读统计数据
+ */
+const mockGetAnnouncementStats = (announcementId) => {
+  const announcement = MOCK_TEACHER_ANNOUNCEMENTS.find(item => item.id === announcementId)
+  if (announcement) {
+    return mockRequest({
+      viewCount: announcement.viewCount,
+      totalStudents: 128,
+      readRate: Math.round(announcement.viewCount / 128 * 100)
+    }, 500)
+  }
+  return mockRequest({ viewCount: 0, totalStudents: 128, readRate: 0 }, 500)
+}
+
+/**
+ * 获取教师个人信息
+ * @returns {Promise} 返回教师个人信息
+ */
+const mockGetTeacherInfo = () => {
+  const userInfo = wx.getStorageSync('userInfo') || MOCK_USERS.teacher
+  return mockRequest(userInfo)
+}
+
+/**
+ * 更新教师个人信息
+ * @param {Object} data - 要更新的字段
+ * @returns {Promise} 返回操作结果
+ */
+const mockUpdateTeacherInfo = (data) => {
+  const userInfo = wx.getStorageSync('userInfo') || MOCK_USERS.teacher
+  Object.assign(userInfo, data)
+  wx.setStorageSync('userInfo', userInfo)
+  return mockRequest({ success: true }, 800)
+}
+
+>>>>>>> Stashed changes
 module.exports = {
   mockRequest,
   mockLogin,
